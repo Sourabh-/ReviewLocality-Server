@@ -9,9 +9,7 @@ const config = JSON.parse(fs.readFileSync("./config.json"));
 const mongo = require('./utility/mongo');
 
 const mongoapp = new mongo();
-mongoapp.connect()
-.then((db) => { console.log(db); })
-.catch((err) => { console.log(err); })
+mongoapp.connect((db) => { app.db = db; });
 
 // Parsers for POST data
 app.use(bodyParser.json());

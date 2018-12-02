@@ -2,12 +2,33 @@ const fs = require('fs');
 const config = JSON.parse(fs.readFileSync("./config.json"));
 const MongoClient = require('mongodb').MongoClient;
 
-module.exports = class mongo {
-    constructor() {
-        this.db = null;
-    }
+var MongoApp;  
+(function() {
+    var instance;
+    MongoApp = function () {
+        if (instance) {
+            return instance;
+        }
 
-    connect() {
-    	return MongoClient.connect(config.mongo.url, { useNewUrlParser: true });
+        instance = this;
+        this.db = null;
+        return instance;
+    };
+
+    MongoApp.prototype.connect = (cb) => {
+    	if(this.db)
+    		cb(this.db);
+
+    	MongoClient.connect(config.mongo.url, { useNewUrlParser: true })
+    	.then((db) => {
+    		this.db = db;
+    		cb(db);
+    	})
+    	.catch((err) => {
+    		console.log(err);
+    		process.exit();
+    	})
     }
-}
+}());
+
+module.exports = MongoApp;

@@ -1,6 +1,6 @@
 {
 	"mongo": {
-		"url": "mongodb://root:root@ds129706.mlab.com:29706/status-report"
+		"url": "mongodb://127.0.0.1:27017/locality"
 	},
 	"server": {
 		"port": 8083
